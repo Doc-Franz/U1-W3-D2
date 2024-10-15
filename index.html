@@ -54,7 +54,7 @@
         <li>3rd</li>
       </ul>
 
-      <a href="https://epicode.com/it/">Questo link porta al sito di Epicode</a>
+      <a href="https://epicode.com/it/" id="epicode">Questo link porta al sito di Epicode</a>
 
       <div>
         <p>Questo testo è un placeholder per gli esercizi</p>
@@ -64,6 +64,9 @@
     <div>
       <p>Anche questo testo è per gli esercizi</p>
       <h2 id="changeMyColor" style="color: #ff00d6">Apri questa pagina con VSCode per scoprire gli esercizi</h2>
+      <nav><a href="#" id="hidden-table">Nascondi la tabella</a></nav>
+      <br />
+      <nav><a href="#" id="show-table">Mostra la tabella</a></nav>
     </div>
 
     <div id="tableArea"></div>
@@ -113,10 +116,10 @@
                Scrivi una funzione che cambi la proprietà href di ogni link (tranne quello nel footer) con il valore https://www.google.com
               */
 
-      const link = document.querySelectorAll("a[href]:not(footer a[href])");
-
+      const link = document.getElementById("epicode");
+      console.log(link);
       const changeUrls = function (link) {
-        link.forEach((element) => (element.href = "https://www.google.com"));
+        link.href = "https://www.google.com";
       };
 
       changeUrls(link);
@@ -210,49 +213,100 @@
             */
 
       const tableArea = document.getElementById("tableArea");
+      const headings = ["Immagine", "Nome prodotto", "Quantità", "Prezzo"];
 
-      const generateTable = function (tableArea) {
-        const newTable = document.createElement("table");
-        const tableHead = document.createElement("thead");
-
-        const tableRowHeading = document.createElement("tr");
-        for (let i = 0; i < 4; i++) {
-          const tableHeading = document.createElement("th");
-        }
-        const tableBody = document.createElement("tbody");
-        for (let i = 0; i < 4; i++) {
-          const tableRowData = document.createElement("tr");
-        }
-        const tableData = document.createElement("td");
-
+      const generateTable = function (tableArea, headings) {
+        const newTable = document.createElement("table"); // Creazione ed inserimento dell'elemento "table" nel nodo della pagina
         tableArea.appendChild(newTable);
+
+        const tableHead = document.createElement("thead"); // Creazione ed inserimento dell'elemento "thead" nel nodo della pagina
         newTable.appendChild(tableHead);
+
+        const tableRowHeading = document.createElement("tr"); // Creazione ed inserimento dell'elemento "tr" nel nodo della pagina
         tableHead.appendChild(tableRowHeading);
-        tableRowHeading.append(tableHeading);
+
+        for (let i = 0; i < headings.length; i++) {
+          const tableHeading = document.createElement("th"); // Creazione de inserimento dei titoli della tabella
+          tableHeading.innerText = headings[i];
+          tableRowHeading.appendChild(tableHeading);
+        }
+        const tableBody = document.createElement("tbody"); // Creazione ed inserimento dell'elemento "tbody" nel nodo della pagina
         newTable.appendChild(tableBody);
-        tableBody.appendChild(tableRowData);
-        tableRowData.appendChild(tableData);
+
+        for (let i = 0; i < 5; i++) {
+          const tableRowData = document.createElement("tr");
+          tableBody.appendChild(tableRowData);
+          for (let j = 0; j < headings.length; j++) {
+            const tableData = document.createElement("td");
+            tableData.innerText = `${headings[j]}${i}`;
+            tableRowData.appendChild(tableData);
+          }
+        }
       };
 
-      generateTable(tableArea);
+      generateTable(tableArea, headings);
 
       /* ESERCIZIO 12
                Crea una funzione che aggiunga una riga alla tabella precedentemente creata e fornisca i dati necessari come parametri
             */
 
-      const addRow = function () {};
+      const tableBody = document.querySelector("div table tbody");
+      let counter = headings.length + 1;
+
+      const addRow = function (table) {
+        const newTr = document.createElement("tr");
+        tableBody.appendChild(newTr);
+        for (let i = 0; i < headings.length; i++) {
+          const newTd = document.createElement("td");
+          newTd.innerText = `${headings[i]}${counter}`;
+          newTr.appendChild(newTd);
+        }
+      };
+
+      tableBody.onclick = function () {
+        addRow(tableBody);
+        counter++;
+      };
 
       /* ESERCIZIO 14
               Crea una funzione che nasconda le immagini della tabella quando eseguita
             */
 
-      const hideAllImages = function () {};
+      const table = document.querySelector("table");
+      const hiddenTable = document.getElementById("hidden-table");
+      const showTable = document.getElementById("show-table");
+
+      const hideAllImages = function (table) {
+        table.setAttribute("hidden", "");
+      };
+      const showAllImages = function (table) {
+        table.removeAttribute("hidden");
+      };
+
+      hiddenTable.onclick = function () {
+        hideAllImages(table);
+      };
+
+      showTable.onclick = function () {
+        showAllImages(table);
+      };
 
       /* EXTRA ESERCIZIO 15
               Crea una funzione che cambi il colore del h2 con id "changeMyColor" con un colore random ad ogni click ricevuto
-            */
+              */
 
-      const changeColorWithRandom = function () {};
+      const changeMyColor = document.getElementById("changeMyColor");
+
+      const changeColorWithRandom = function (changeMyColor) {
+        const color1 = Math.floor(Math.random() * 256);
+        const color2 = Math.floor(Math.random() * 256);
+        const color3 = Math.floor(Math.random() * 256);
+        changeMyColor.style.color = `rgb(${color1},${color2},${color3})`;
+      };
+
+      changeMyColor.onclick = function () {
+        changeColorWithRandom(changeMyColor);
+      };
     </script>
   </body>
 </html>
